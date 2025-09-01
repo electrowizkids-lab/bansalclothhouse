@@ -1,78 +1,52 @@
-// Mobile menu toggle
-const menuToggle = document.getElementById("menuToggle");
-const navLinks = document.getElementById("navLinks");
-menuToggle.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
-});
-document.querySelectorAll(".nav-links a").forEach((link) => {
-  link.addEventListener("click", () => navLinks.classList.remove("active"));
-});
+// Mobile nav toggle
+const navToggle = document.getElementById('nav-toggle');
+const siteNav = document.getElementById('site-nav');
 
-// Footer year
-document.getElementById("year").textContent = new Date().getFullYear();
+if (navToggle && siteNav) {
+  navToggle.addEventListener('click', () => {
+    const isOpen = siteNav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
 
-// Scroll-to-top button
-const toTop = document.getElementById("toTop");
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 400) toTop.classList.add("show");
-  else toTop.classList.remove("show");
-});
-toTop.addEventListener("click", () =>
-  window.scrollTo({ top: 0, behavior: "smooth" })
-);
-
-// Contact form (demo only)
-const form = document.getElementById("contactForm");
-const waQuick = document.getElementById("waQuick");
-
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const message = document.getElementById("message").value.trim();
-
-  if (!name || !phone || !message) {
-    alert("Please fill all fields.");
-    return;
-  }
-
-  alert("Thanks! We received your enquiry. We'll contact you shortly.");
-  this.reset();
-  waQuick.setAttribute("href", buildWaLink()); // refresh quick link after reset
-});
-
-// Build dynamic WhatsApp link (choose either number as default)
-function buildWaLink() {
-  const name = document.getElementById("name").value.trim() || "Buyer";
-  const phone = document.getElementById("phone").value.trim();
-  const msg = document.getElementById("message").value.trim();
-  const text = encodeURIComponent(
-    `Hello Bansal Cloth House,\nI want to enquire about Lycra fabrics.\nName: ${name}\nPhone: ${phone}\nRequirement: ${msg}`
-  );
-  // Default to Nikhil (92139 91994); change to 9891818753 if you prefer:
-  return `https://wa.me/919213991994?text=${text}`;
+  // Close menu when clicking a link (good for one-page)
+  siteNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => siteNav.classList.remove('open'));
+  });
 }
-waQuick.setAttribute("href", buildWaLink());
-["name", "phone", "message"].forEach((id) => {
-  document.getElementById(id).addEventListener("input", () => {
-    waQuick.setAttribute("href", buildWaLink());
+
+// Smooth scroll for hash links (nice on mobile)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    const targetId = this.getAttribute('href');
+    if (targetId.length > 1) {
+      e.preventDefault();
+      const el = document.querySelector(targetId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 });
-function sendEnquiry() {
-  const name = document.querySelector("#contact-form input[name='name']").value;
-  const email = document.querySelector("#contact-form input[name='email']").value;
-  const message = document.querySelector("#contact-form textarea[name='message']").value;
 
-  // Build WhatsApp message
+// WhatsApp enquiry from contact form
+function sendEnquiry() {
+  const form = document.getElementById('contact-form');
+  const name = form.querySelector('input[name="name"]').value.trim();
+  const email = form.querySelector('input[name="email"]').value.trim();
+  const message = form.querySelector('textarea[name="message"]').value.trim();
+
   let text = "Hello, I want to enquire:\n";
   if (name) text += "👤 Name: " + name + "\n";
   if (email) text += "📧 Email: " + email + "\n";
   if (message) text += "💬 Message: " + message + "\n";
 
-  // Encode for URL
-  const encodedText = encodeURIComponent(text);
-
-  // Open WhatsApp chat with your number
-  const whatsappUrl = "https://wa.me/919213991994?text=" + encodedText;
-  window.open(whatsappUrl, "_blank");
+  const url = "https://wa.me/919213991994?text=" + encodeURIComponent(text);
+  window.open(url, "_blank");
 }
+window.sendEnquiry = sendEnquiry;
+
+// Footer year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Improve section anchor offsets (for sticky header)
+document.querySelectorAll('section[id]').forEach(sec => {
+  sec.style.scrollMarginTop = '80px';
+});
