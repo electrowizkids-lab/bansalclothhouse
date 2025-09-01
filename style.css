@@ -224,3 +224,84 @@ a:hover { text-decoration: underline; }
   .section { padding: 44px 0; }
   .hero-copy h1 { font-size: 28px; }
 }
+
+/* ===== MOBILE FIX PACK (add at end of style.css) ===== */
+
+html, body { overflow-x: hidden; }
+
+/* Keep header compact & brand text from wrapping */
+@media (max-width: 720px) {
+  .brand { gap: 8px; }
+  .brand-text { font-size: 16px; white-space: nowrap; }
+}
+
+/* Mobile nav: full-width dropdown, no misalignment */
+@media (max-width: 720px) {
+  .site-nav {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    display: none;
+    background: #fff;
+    border-bottom: 1px solid var(--ring);
+    box-shadow: 0 10px 24px rgba(0,0,0,.08);
+    z-index: 60;
+  }
+  .site-nav.open { display: block; }
+  .site-nav ul { flex-direction: column; gap: 0; padding: 10px; }
+  .site-nav a { display: block; padding: 12px 14px; }
+}
+
+/* Hero: stack and center on small screens */
+@media (max-width: 720px) {
+  .hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .hero-actions { justify-content: center; }
+  .hero .btn-primary,
+  .hero .btn-whatsapp { width: 100%; max-width: 420px; }
+  .hero-art { min-height: 160px; }
+}
+
+/* Products: one column on phones, fix card/pill alignment */
+@media (max-width: 900px) {
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .products-grid { grid-template-columns: 1fr; }
+  .product-img, .why-img { height: 160px; }
+}
+
+/* Ensure card contents align and "Popular" pill sits correctly */
+.card { position: relative; align-items: flex-start; }
+.chip {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 10px;
+  font-size: 12px;
+  background: #be185d;
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+/* Features: 1 per row on phones */
+@media (max-width: 720px) {
+  .features { grid-template-columns: 1fr; }
+}
+
+/* Contact: single column + centered actions on phones */
+@media (max-width: 1024px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .contact-actions { justify-content: center; }
+}
+
+/* Footer: clean single column, centered buttons/text */
+@media (max-width: 720px) {
+  .footer-grid { grid-template-columns: 1fr; text-align: center; }
+  .footer-col { margin-bottom: 12px; }
+  .brand--footer { display: inline-flex; justify-content: center; }
+  .footer-wa { width: 100%; text-align: center; }
+}
